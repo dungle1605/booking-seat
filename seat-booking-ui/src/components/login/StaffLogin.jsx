@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDocumentTitle, useScrollTop } from '../../hooks';
 import { STAFF_FORGOT_PASSWORD, STAFF_SIGNUP } from '../../constants/routes';
@@ -15,10 +15,10 @@ const SignInSchema = Yup.object().shape({
 });
 
 const StaffLogin = ({history}) => {
-    const {authStatus, isAuthenticating} = useSelector((state) => ({
-        authStatus: state.app.authStatus,
-        isAuthenticating: state.app.isAuthenticating
-    }));
+    // const {authStatus, isAuthenticating} = useSelector((state) => ({
+    //     authStatus: state.app.authStatus,
+    //     isAuthenticating: state.app.isAuthenticating
+    // }));
 
     const dispatch = useDispatch();
 
