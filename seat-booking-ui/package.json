@@ -19,7 +19,7 @@
     "yup": "^1.4.0"
   },
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --port 3456",
     "build": "vite build",
     "serve": "vite preview --port 3000",
     "test": "cross-env NODE_ENV=test jest --config=jest.config.json"
