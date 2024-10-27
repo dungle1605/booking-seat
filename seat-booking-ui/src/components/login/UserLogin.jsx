@@ -2,11 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useDocumentTitle, useScrollTop } from '../../hooks';
 import { STAFF_FORGOT_PASSWORD, USER_SIGNUP } from '../../constants/routes';
-import { signIn } from '../../redux/actions/authActions';
+import { userSignIn, singUpPhoneNumberOTP } from '../../redux/actions/authActions';
 import { setAuthenticating, setAuthStatus } from '../../redux/actions/miscActions';
 import './UserLogin.css'
 import PropTypes from 'prop-types';
 import * as Yup from 'yup';
+import UserInfo from '../common/userInfo/UserInfo';
+import { BsTelephoneMinus } from "react-icons/bs";
 
 const SignInSchema = Yup.object().shape({
     phoneNumber: Yup.string()
@@ -33,13 +35,29 @@ const UserLogin = ({history}) => {
     
     const onSignUp = () => history.push(USER_SIGNUP);
     
-    const onSubmitForm = (form) => {
-        dispatch(signIn(form.phoneNumber, form.password));
+    const onSubmitForm = (e) => {
+        e.preventDefault();
+        if(activeTab === 'signin')
+            dispatch(userSignIn(formSignInData.phoneNumber, formSignInData.password));
+        else
+            dispatch(singUpPhoneNumberOTP(formSignInData.phoneNumber));
+    }
+
+    const handleSignInFormChange = (e) => {
+        const {name, value} = e.target;
+        setFormSignInData({
+            ...formSignInData,
+            [name]: value
+        })
     }
 
     const [activeTab, setActiveTab] = useState('signin');
     const [buttonLabel, setButtonLabel] = useState('Đăng nhập');
     const [title, setTitle] = useState('Đăng nhập tài khoản');
+    const [formSignInData, setFormSignInData] = useState({
+        phoneNumber: '',
+        password: ''
+    });
     const [signInPhoneNumber, setSignInPhoneNumber] = useState('');
 
     const selectTab = tabId => {
@@ -50,13 +68,7 @@ const UserLogin = ({history}) => {
 
     return (
         <div className='signin-form-body'>
-            <div className="user-info">
-                <div>
-                    <span>Đăng nhập</span>
-                    <span>/</span>
-                    <span>Đăng ký</span>
-                </div>
-            </div>
+            <UserInfo />
             <div className="signin-form-container">
                 <div className="image">
                     <img src="../../../public/beaitful-woman.jpg" alt="Image" />
@@ -74,22 +86,25 @@ const UserLogin = ({history}) => {
                         </div>
                     </div>
                     <div id="signin" style={{ display: activeTab === 'signin' ? 'block' : 'none' }}>
-                        <form>
-                            <label>Số điện thoại</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber" required />
+                        <form onSubmit={onSubmitForm}>
+                            <div className="textbox-container">
+                                <BsTelephoneMinus className='icon'/>
+                                <input type="text" id="phoneNumber" name="phoneNumber" placeholder='Số điện thoại' required onChange={handleSignInFormChange} />
+                            </div>
                             
-                            <label>Mật khẩu</label>
-                            <input type="password" id="password" name="password" required />
-                            
+                            <div className="textbox-container">
+                                <input type="password" id="password" name="password" placeholder='Mật khẩu' required onChange={handleSignInFormChange} />
+                            </div>
                             <button type="submit">{buttonLabel}</button>
                         </form>
                     </div>
 
                     <div id="signup" style={{ display: activeTab === 'signup' ? 'block' : 'none' }}>
-
-                        <form>
-                            <label>Số điện thoại</label>
-                            <input type="text" id="phoneNumber" name="phoneNumber" required />
+                        <form onSubmit={onSubmitForm}>
+                            <div className="textbox-container">
+                                <BsTelephoneMinus className='icon'/>
+                                <input type="text" id="phoneNumber" name="phoneNumber" placeholder='Số điện thoại' required />
+                            </div>
                             
                             <button type="submit">{buttonLabel}</button>
                         </form>
