@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react';
 import logoImg from '../../../images/logo.png';
 import { Popover, Transition } from "@headlessui/react";
+import { BellIcon } from "@heroicons/react/24/outline";
 import PropTypes from 'prop-types';
 
 NotificationDropdown.propTypes = {
