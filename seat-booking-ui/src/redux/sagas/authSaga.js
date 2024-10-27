@@ -29,6 +29,7 @@ function* authSaga({ type, payload }){
         case SIGN_UP_PHONENUMBER_OTP:
             try{
                 console.log("Call API to get OPT");
+                // yield put({type: })
             } catch(e){
                 
             }
