@@ -3,14 +3,11 @@ import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 import Logo from "./Logo";
 import NotificationDropdown from "./NotificationDropdown";
-import HeroSearchForm2Mobile from "./HeroSearchForm2Mobile";
+import DropdownTravelers from "./DropdownTravelers";
+// import HeroSearchForm2Mobile from "./HeroSearchForm2Mobile";
 
 Navigations.propTypes = {
   className: PropTypes.string,
-};
-
-Navigations.defaultProps = {
-  className: "",
 };
 
 function Navigations(props) {
@@ -26,19 +23,19 @@ function Navigations(props) {
           </div>
         </div>
 
-        <div className="self-center lg:hidden flex-[3] max-w-lg !mx-auto md:px-3">
+        {/* <div className="self-center lg:hidden flex-[3] max-w-lg !mx-auto md:px-3">
           <HeroSearchForm2Mobile />
-        </div>
+        </div> */}
 
         <div className="hidden md:flex flex-shrink-0 justify-end flex-1 lg:flex-none text-neutral-700 dark:text-neutral-100">
           <div className="hidden lg:flex space-x-1">
-            <NotificationDropdown />
-            <AvatarDropdown />
+            <NotificationDropdown className={""} />
+            {/* <AvatarDropdown /> */}
           </div>
           <div className="flex space-x-2 lg:hidden">
             <NotificationDropdown />
-            <AvatarDropdown />
-            <MenuBar />
+            {/* <AvatarDropdown />
+            <MenuBar /> */}
           </div>
         </div>
       </div>
