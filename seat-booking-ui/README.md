@@ -1,14 +1,14 @@
-# How to launch the front-end project
+## Chisfis React Online Booking Template
 
-## 1. Install Docker
+Chisfis | Online Booking – a responsive React template theme with Online booking, Listing, Real Estate, and booking system for accommodation, tours, travel experiences, cruises, car rentals, real estate, and travel agencies. Chisfis is built by the latest React typescript and Tailwindcss.
 
-Can download the latest version in this page:
-https://www.docker.com/
+Chisfis has a modern and fresh design for the entire website from overall to functions such as: Select react-datepicker, modal gallery, google map, add listing, blog…
 
-## 2. Waiting until instalation finished
+**Demo**
 
-## 3. Open the CMD and following those command
+[Preview Here](https://chisfis-thaipham-coder.vercel.app) or visit [https://chisfis-pi.vercel.app](https://chisfis-pi.vercel.app)
 
-docker-compose up
 
-It will automatic install the node_modules folder and run the necessary command
+[Buy from Author](https://themeforest.net/item/chisfis-online-booking-react-template/33515927) or visit [https://themeforest.net/item/chisfis-online-booking-react-template/33515927](https://themeforest.net/item/chisfis-online-booking-react-template/33515927)
+
+_Credit to_ **ChisNghiax**
