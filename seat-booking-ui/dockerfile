@@ -1,7 +1,5 @@
 # Use an official Node.js image as the base image
 FROM node:latest
-RUN node -v
-RUN npm -v
 
 # Set the working directory inside the container
 WORKDIR /app
@@ -14,8 +12,5 @@ RUN npm install
 
 # Copy the rest of the project files to the working directory
 COPY . .
-
-RUN npm run build
-
 # Define the default command to run the development server
-CMD [ "npm", "run", "dev"]
+CMD [ "npm", "run", "start"]
