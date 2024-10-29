@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LocationInput from "./LocationInput";
-import GuestsInput, { GuestsInputProps } from "./GuestsInput";
+import GuestsInput from "./GuestsInput";
 import { FocusedInputShape } from "react-dates";
 import StayDatesRangeInput from "./StayDatesRangeInput";
 import moment from "moment";
@@ -21,11 +21,7 @@ const defaultDateRange = {
   startDate: moment(),
   endDate: moment().add(4, "days"),
 };
-const defaultGuestValue: GuestsInputProps["defaultValue"] = {
-  guestAdults: 2,
-  guestChildren: 2,
-  guestInfants: 1,
-};
+const defaultTicketValue = 1;
 
 const StaySearchForm: FC<StaySearchFormProps> = ({
   haveDefaultValue = false,
@@ -35,7 +31,7 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     endDate: null,
   });
   const [locationInputValue, setLocationInputValue] = useState("");
-  const [guestValue, setGuestValue] = useState({});
+  const [ticketValue, setTicketValue] = useState(defaultTicketValue);
 
   const [dateFocused, setDateFocused] = useState<FocusedInputShape | null>(
     null
@@ -46,7 +42,7 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     if (haveDefaultValue) {
       setDateRangeValue(defaultDateRange);
       setLocationInputValue(defaultLocationValue);
-      setGuestValue(defaultGuestValue);
+      setTicketValue(defaultTicketValue);
     }
   }, []);
   //
@@ -55,6 +51,16 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     return (
       <form className="w-full relative mt-8 flex rounded-full shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800 ">
         <LocationInput
+          placeHolder="Điểm đi"
+          desc="Lựa chọn điểm đi"
+          defaultValue={locationInputValue}
+          onChange={(e) => setLocationInputValue(e)}
+          onInputDone={() => setDateFocused("startDate")}
+          className="flex-[1.5]"
+        />
+        <LocationInput
+          placeHolder="Điểm đến"
+          desc="Lựa chọn điểm đến"
           defaultValue={locationInputValue}
           onChange={(e) => setLocationInputValue(e)}
           onInputDone={() => setDateFocused("startDate")}
@@ -67,8 +73,8 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
           className="flex-[2]"
         />
         <GuestsInput
-          defaultValue={guestValue}
-          onChange={(data) => setGuestValue(data)}
+          defaultValue={ticketValue}
+          onChange={(data) => setTicketValue(data)}
           className="flex-[1.2]"
         />
       </form>

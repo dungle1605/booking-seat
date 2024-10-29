@@ -25,11 +25,7 @@ const ListingStayPage: FC<ListingStayPageProps> = ({ className = "" }) => {
 
       <div className="container relative overflow-hidden">
         {/* SECTION HERO */}
-        <SectionHeroArchivePage
-          currentPage="Stays"
-          currentTab="Stays"
-          className="pt-10 pb-24 lg:pb-28 lg:pt-16 "
-        />
+        <SectionHeroArchivePage className="pt-10 pb-24 lg:pb-28 lg:pt-16 " />
 
         {/* SECTION */}
         <SectionGridFilterCard className="pb-24 lg:pb-28" />

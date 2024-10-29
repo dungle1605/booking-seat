@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import LocationInput from "./LocationInput";
-import GuestsInput, { GuestsInputProps } from "./GuestsInput";
+import GuestsInput from "./GuestsInput";
 import ExperiencesDateSingleInput from "./ExperiencesDateSingleInput";
 import moment from "moment";
 import { FC } from "react";
@@ -8,11 +8,7 @@ import { FC } from "react";
 // DEFAULT DATA FOR ARCHIVE PAGE
 const defaultLocationValue = "Tokyo, Jappan";
 const defaultDate = moment();
-const defaultGuestValue: GuestsInputProps["defaultValue"] = {
-  guestAdults: 2,
-  guestChildren: 2,
-  guestInfants: 1,
-};
+const defaultTicketValue = 1;
 
 export interface ExperiencesSearchFormProps {
   haveDefaultValue?: boolean;
@@ -23,7 +19,7 @@ const ExperiencesSearchForm: FC<ExperiencesSearchFormProps> = ({
 }) => {
   const [dateValue, setdateValue] = useState<moment.Moment | null>(null);
   const [locationInputValue, setLocationInputValue] = useState("");
-  const [guestValue, setGuestValue] = useState({});
+  const [ticketValue, setTicketValue] = useState(defaultTicketValue);
 
   const [dateFocused, setDateFocused] = useState<boolean>(false);
   //
@@ -32,7 +28,7 @@ const ExperiencesSearchForm: FC<ExperiencesSearchFormProps> = ({
     if (haveDefaultValue) {
       setdateValue(defaultDate);
       setLocationInputValue(defaultLocationValue);
-      setGuestValue(defaultGuestValue);
+      setTicketValue(defaultTicketValue);
     }
   }, []);
 
@@ -59,8 +55,8 @@ const ExperiencesSearchForm: FC<ExperiencesSearchFormProps> = ({
         />
 
         <GuestsInput
-          defaultValue={guestValue}
-          onChange={(data) => setGuestValue(data)}
+          defaultValue={ticketValue}
+          onChange={(data) => setTicketValue(data)}
           className="flex-[1.5]"
           buttonSubmitHref="/listing-experiences"
         />

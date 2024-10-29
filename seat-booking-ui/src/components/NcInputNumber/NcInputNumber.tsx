@@ -61,8 +61,6 @@ const NcInputNumber: FC<NcInputNumberProps> = ({
       className={`nc-NcInputNumber flex items-center justify-between space-x-5 ${className}`}
       data-nc-id="NcInputNumber"
     >
-      {label && renderLabel()}
-
       <div
         className={`nc-NcInputNumber flex items-center justify-between w-28`}
       >
