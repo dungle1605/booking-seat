@@ -138,7 +138,7 @@ const NavMobile: React.FC<NavMobileProps> = ({
       <div className="flex items-center justify-between py-6 px-5">
         <a
           className="inline-block"
-          href="https://themeforest.net/item/chisfis-online-booking-react-template/33515927"
+          href="https://themeforest.net/item/SeatBooking-online-booking-react-template/33515927"
           target="_blank"
           rel="noopener noreferrer"
         >

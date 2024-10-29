@@ -24,9 +24,9 @@ const SectionBecomeAnAuthor: FC<SectionBecomeAnAuthorProps> = ({
           Why did you choose us?
         </h2>
         <span className="block mt-6 text-neutral-500 dark:text-neutral-400">
-          Accompanying us, you have a trip full of experiences. With Chisfis,
-          booking accommodation, resort villas, hotels, private houses,
-          apartments... becomes fast, convenient and easy.
+          Accompanying us, you have a trip full of experiences. With
+          SeatBooking, booking accommodation, resort villas, hotels, private
+          houses, apartments... becomes fast, convenient and easy.
         </span>
         <ButtonPrimary className="mt-6 sm:mt-11">
           Become an author
