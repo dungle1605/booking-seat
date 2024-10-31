@@ -15,7 +15,7 @@ function PageHome() {
         <SectionHero className="pt-10 lg:pt-16 lg:pb-16" />
 
         <div className="relative">
-          <SectionListTrips from={""} className="33" />
+          <SectionListTrips beginPoint={"Tp.HCM"} destinationPoint={"Bà Rịa-Vũng Tàu"} className="33" />
         </div>
 
         {/* SECTION */}
