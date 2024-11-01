@@ -3,6 +3,8 @@ import BackgroundSection from "components/BackgroundSection/BackgroundSection";
 import ClearDataButton from "components/HeroSearchForm/ClearDataButton";
 import Checkbox from "shared/Checkbox/Checkbox";
 import NavItem from "shared/NavItem/NavItem";
+import Nav from "shared/Nav/Nav";
+import ButtonSecondary from "shared/Button/ButtonSecondary";
 
 export interface SectionListTripsProps {
   beginPoint: string;
@@ -11,12 +13,27 @@ export interface SectionListTripsProps {
 }
 
 const seatList = ["Hàng đầu", "Hàng giữa", "Hàng cuối"];
-const tabs = ["Chọn ghế", "Lịch trình", "Trung chuyển", "Chính sách"]
+const tabs = ["Chọn ghế", "Lịch trình", "Trung chuyển", "Chính sách"];
 const timeLineFilter = [
   "Sáng sớm 00:00 - 06:00 (0)",
   "Buổi sáng 06:00 - 12:00 (0)",
   "Buổi chiều 12:00 - 18:00 (0)",
   "Buổi tối 18:00 - 24:00 (28)",
+];
+
+const schedules = [
+  {
+    title: "Bến xe Miền Tây",
+    desc: "VP BX Miền Tây: 395 Kinh Dương Vương , P.An Lạc , Q.Bình Tân , TP.HCM",
+  },
+  {
+    title: "Bến xe An Sương",
+    desc: "Bến Xe An Sương, Quốc Lộ 22, Ấp Đông Lân, Bà Điểm, Hóc Môn, TP Hồ Chí Minh",
+  },
+  {
+    title: "Bến xe Miền Tây",
+    desc: "VP BX Miền Tây: 395 Kinh Dương Vương , P.An Lạc , Q.Bình Tân , TP.HCM",
+  },
 ];
 
 const SectionListTrips: FC<SectionListTripsProps> = ({
@@ -25,19 +42,22 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
   className = "",
 }) => {
   const [selected, setSelected] = useState("");
+  const [tabActiveState, setTabActiveState] = useState("");
+
+  const handleClickTab = (item: any) => {
+    return item;
+  };
   return (
     <div
       className={`nc-SectionListTrips relative flex flex-col lg:flex-row ${className}`}
       data-nc-id="SectionListTrips"
     >
       {/* Filter Section */}
-      <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mr-10 lg:w-2/5 sm:rounded-2xl sm:border space-y-8 px-0 sm:p-6 xl:p-8">
+      <div className="flex-shrink-0 mb-10 lg:mb-0 lg:mr-10 lg:w-2/5 sm:rounded-2xl sm:border space-y-8 px-0 sm:p-6 xl:p-8 h-3/6">
         <div className="grid gap-y-1">
-          <div
-            className="relative"
-          >
+          <div className="relative">
             <p className="xl:text-lg font-semibold lg:w-2/5">Bộ lọc tìm kiếm</p>
-            <ClearDataButton onClick={() => { }} />
+            <ClearDataButton onClick={() => {}} />
           </div>
           <div>
             <p className="xl:text-lg font-semibold lg:w-2/5">Giờ đi</p>
@@ -49,7 +69,7 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                   label={item}
                   subLabel=""
                   defaultChecked={false}
-                  onChange={() => { }}
+                  onChange={() => {}}
                 />
               ))}
             </div>
@@ -62,10 +82,11 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                 <button
                   key={index}
                   onClick={() => setSelected(item)}
-                  className={`px-4 py-1.5 sm:px-6 sm:py-2.5 rounded-full focus:outline-none ${selected === item
-                    ? "bg-neutral-800 dark:bg-neutral-300 text-white dark:text-neutral-900"
-                    : "text-neutral-6000 dark:text-neutral-400"
-                    }`}
+                  className={`px-4 py-1.5 sm:px-6 sm:py-2.5 rounded-full focus:outline-none ${
+                    selected === item
+                      ? "bg-neutral-800 dark:bg-neutral-300 text-white dark:text-neutral-900"
+                      : "text-neutral-6000 dark:text-neutral-400"
+                  }`}
                 >
                   {item}
                 </button>
@@ -74,18 +95,34 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
           </div>
         </div>
       </div>
-
       {/* Path Section */}
       <div className="lg:block flex-grow mb-10">
-        <p className="xl:text-lg font-semibold pb-8 text-2xl">{beginPoint}&nbsp;-&nbsp;{destinationPoint}</p>
+        <p className="xl:text-lg font-semibold pb-8 text-2xl">
+          {beginPoint}&nbsp;-&nbsp;{destinationPoint}
+        </p>
         {/* Path Details */}
-        <div className="grid gap-y-1 sm:rounded-2xl sm:border space-y-8 px-0 sm:p-6 xl:p-8">
+        <div className="grid gap-y-1 sm:rounded-2xl sm:border space-y-4 px-0 sm:p-6 xl:p-8">
           <div className="flex justify-between">
             {/* Begin Point */}
             <div className="flex justify-around items-center">
               <p className="text-xl">11:30&nbsp;</p>
               <div className="text-neutral-300 dark:text-neutral-400">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="green" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" className="icon icon-tabler icons-tabler-outline icon-tabler-circle-dot"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" /><path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" /></svg>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="green"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  className="icon icon-tabler icons-tabler-outline icon-tabler-circle-dot"
+                >
+                  <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                  <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                  <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                </svg>
               </div>
             </div>
 
@@ -130,8 +167,20 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
             </div>
             <div className="flex justify-end w-2/4">
               <div className="text-neutral-300 dark:text-neutral-400">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" width='16' height='16' viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  width="16"
+                  height="16"
+                  viewBox="0 0 24 24"
+                  stroke-width="1.5"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
+                  />
                 </svg>
               </div>
               <p>&nbsp;28 chỗ trống</p>
@@ -140,20 +189,81 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
           <div className="flex justify-between">
             <p>Begin point</p>
             <p className="w-2/4 text-right">Destination point</p>
-            <p>135.000đ</p>
+            <div>
+              <span className="text-xl font-semibold text-secondary-6000">
+                135.000đ
+              </span>
+            </div>
           </div>
-        </div>
-        <hr />
-        <div>
-        {tabs.map((item, index) => (
-            <NavItem
-              key={index}
-              isActive={tabActiveState === item}
-              onClick={() => handleClickTab(item)}
-            >
-              {item}
-            </NavItem>
-          ))}
+          <hr />
+
+          {/* Detail Trips - Header*/}
+          <nav
+            className="nc-Nav relative flex w-full overflow-x-auto text-sm md:text-base hiddenScrollbar"
+            data-nc-id="Nav"
+          >
+            <ul className="flex  sm:space-x-2">
+              {tabs.map((item, index) => (
+                <li
+                  className="nc-NavItem relative"
+                  data-nc-id="NavItem"
+                  key={index}
+                >
+                  <button
+                    className={`block !leading-none whitespace-nowrap text-sm sm:text-base sm:px-4 sm:py-3 capitalize rounded-full text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none 
+                      ${
+                        tabActiveState === item
+                          ? "underline dark:text-neutral-100 text-neutral-900 bg-neutral-100 dark:bg-neutral-800"
+                          : ""
+                      }`}
+                    onClick={() => setTabActiveState(item)}
+                  >
+                    {item}
+                  </button>
+                </li>
+              ))}
+              <button
+                className={`sm:px-4 sm:py-1.5 rounded-full focus:outline-none bg-neutral-800 dark:bg-neutral-300 text-white dark:text-neutral-900`}
+              >
+                Chọn chuyến
+              </button>
+            </ul>
+          </nav>
+
+          {/* Details Trip - Body */}
+
+          {/* Schedules */}
+          <div className="overflow-y-auto h-4/5">
+            {schedules.map((item, index) => (
+              <div key={index} className="flex">
+                <div className="text-neutral-300 dark:text-neutral-400">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke={index === 0 ? "green" : "currentColor"}
+                    stroke-width="2"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    className="icon icon-tabler icons-tabler-outline icon-tabler-circle-dot"
+                  >
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+                    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0" />
+                  </svg>
+                </div>
+                <div className="ml-4">
+                  <p className="text-sm space-y-0.5">{item.title}</p>
+                  <p className="text-neutral-500 dark:text-neutral-400">
+                    {item.desc}
+                  </p>
+                  <div className="space-y-2">&nbsp;</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>
