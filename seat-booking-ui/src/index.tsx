@@ -13,13 +13,23 @@ import "./fonts/line-awesome-1.3.0/css/line-awesome.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
+import { Provider } from "react-redux";
+import configureStore from "./redux/store/store";
+import { PersistGate } from "redux-persist/integration/react";
+
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 
+const { store, persistor } = configureStore();
+
 root.render(
   // <React.StrictMode>
-  <App />
+  <Provider store={store}>
+    <PersistGate persistor={persistor}>
+      <App />
+    </PersistGate>
+  </Provider>
   // </React.StrictMode>
 );
 

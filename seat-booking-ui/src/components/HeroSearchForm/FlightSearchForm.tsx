@@ -223,7 +223,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({ haveDefaultValue }) => {
           {renderRadioBtn()}
           <div className="flex flex-1 rounded-full">
             <div className="relative flex flex-1">
-              <LocationInput
+              {/* <LocationInput
                 defaultValue={pickUpInputValue}
                 onChange={(e) => setPickUpInputValue(e)}
                 onInputDone={() => setFieldFocused("dropOffInput")}
@@ -237,9 +237,9 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({ haveDefaultValue }) => {
                 placeHolder="Flying to"
                 desc="Where you want to fly to?"
                 autoFocus={fieldFocused === "dropOffInput"}
-              />
+              /> */}
             </div>
-            <RentalCarDatesRangeInput
+            {/* <RentalCarDatesRangeInput
               defaultDateValue={dateRangeValue}
               defaultTimeValue={timeRangeValue}
               defaultFocus={
@@ -252,7 +252,7 @@ const FlightSearchForm: FC<FlightSearchFormProps> = ({ haveDefaultValue }) => {
               }}
               className="flex-1"
               buttonSubmitHref="/listing-flights"
-            />
+            /> */}
           </div>
         </form>
       </div>

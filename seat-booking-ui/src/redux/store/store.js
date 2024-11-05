@@ -17,6 +17,7 @@ const authPersistConfig = {
   whitelist: ['auth', 'profile', 'basket', 'checkout']
 };
 
+// eslint-disable-next-line import/no-anonymous-default-export
 export default () => {
   const store = createStore(
     persistCombineReducers(authPersistConfig, rootReducer),

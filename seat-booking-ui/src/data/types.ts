@@ -138,3 +138,50 @@ export interface CarDataType {
     lng: number;
   };
 }
+
+// Seat Booking
+export interface SeatDataType {
+  id: number,
+  isBooked: boolean,
+  name: string
+}
+
+export interface Car2DataType{
+  id: number,
+  licensePlateNumber: string,
+  model: string,
+  seats: SeatDataType[]
+}
+
+export interface PickupPointDataType
+{
+  id: number,
+  title: string
+}
+
+export interface RouteDataType{
+  id: number,
+  from: number,
+  to: number,
+  title: string,
+  pickupPoints: PickupPointDataType[]
+}
+
+export interface TripDataType {
+  id: number,
+  avaiableSeats: number,
+  car: Car2DataType[],
+  carId: number,
+  endDate: string,
+  endTime: string,
+  fromId: number,
+  fromProvince: string,
+  isActive: false,
+  price: number,
+  route: RouteDataType[],
+  routeId: number,
+  startDate: string,
+  startTime: string,
+  toId: number,
+  toProvince: string
+}

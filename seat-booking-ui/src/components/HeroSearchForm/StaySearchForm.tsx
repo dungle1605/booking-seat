@@ -13,10 +13,17 @@ export interface DateRage {
 
 export interface StaySearchFormProps {
   haveDefaultValue?: boolean;
+  beginPoints: string[];
+  destinationPoints: string[];
+}
+
+function addDays(date: number, days: number) {
+  var result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
 }
 
 // DEFAULT DATA FOR ARCHIVE PAGE
-const defaultLocationValue = "Tokyo, Jappan";
 const defaultDateRange = {
   startDate: moment(),
   endDate: moment().add(4, "days"),
@@ -25,6 +32,8 @@ const defaultTicketValue = 1;
 
 const StaySearchForm: FC<StaySearchFormProps> = ({
   haveDefaultValue = false,
+  beginPoints = [],
+  destinationPoints = [],
 }) => {
   const [dateRangeValue, setDateRangeValue] = useState<DateRage>({
     startDate: null,
@@ -41,7 +50,6 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
   useEffect(() => {
     if (haveDefaultValue) {
       setDateRangeValue(defaultDateRange);
-      setLocationInputValue(defaultLocationValue);
       setTicketValue(defaultTicketValue);
     }
   }, []);
@@ -51,17 +59,17 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     return (
       <form className="w-full relative mt-8 flex rounded-full shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800 ">
         <LocationInput
+          defaultPoints={beginPoints}
           placeHolder="Điểm đi"
           desc="Lựa chọn điểm đi"
-          defaultValue={locationInputValue}
           onChange={(e) => setLocationInputValue(e)}
           onInputDone={() => setDateFocused("startDate")}
           className="flex-[1.5]"
         />
         <LocationInput
+          defaultPoints={destinationPoints}
           placeHolder="Điểm đến"
           desc="Lựa chọn điểm đến"
-          defaultValue={locationInputValue}
           onChange={(e) => setLocationInputValue(e)}
           onInputDone={() => setDateFocused("startDate")}
           className="flex-[1.5]"

@@ -1,10 +1,12 @@
-import React, { FC, ReactNode, useState } from "react";
-import BackgroundSection from "components/BackgroundSection/BackgroundSection";
+import React, { FC, useEffect, useState } from "react";
 import ClearDataButton from "components/HeroSearchForm/ClearDataButton";
 import Checkbox from "shared/Checkbox/Checkbox";
-import NavItem from "shared/NavItem/NavItem";
-import Nav from "shared/Nav/Nav";
-import ButtonSecondary from "shared/Button/ButtonSecondary";
+import { useDispatch, useSelector } from "react-redux";
+import useDocumentTitle from "hooks/useDocumentTitle";
+import useScrollTop from "hooks/useScrollTop";
+import { getTrips } from "../../redux/actions/tripActions";
+import { setLoading } from "../../redux/actions/miscActions";
+import { TripDataType } from "data/types";
 
 export interface SectionListTripsProps {
   beginPoint: string;
@@ -41,6 +43,9 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
   destinationPoint = "",
   className = "",
 }) => {
+  useDocumentTitle("Trang chủ | Đặt vé xe");
+  useScrollTop();
+
   const [selected, setSelected] = useState("");
   const [tabActiveState, setTabActiveState] = useState("");
 
@@ -114,9 +119,9 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="green"
-                  stroke-width="2"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
                   className="icon icon-tabler icons-tabler-outline icon-tabler-circle-dot"
                 >
                   <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -173,12 +178,12 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                   width="16"
                   height="16"
                   viewBox="0 0 24 24"
-                  stroke-width="1.5"
+                  strokeWidth="1.5"
                   stroke="currentColor"
                 >
                   <path
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z"
                   />
                 </svg>
@@ -244,9 +249,9 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                     viewBox="0 0 24 24"
                     fill="none"
                     stroke={index === 0 ? "green" : "currentColor"}
-                    stroke-width="2"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
                     className="icon icon-tabler icons-tabler-outline icon-tabler-circle-dot"
                   >
                     <path stroke="none" d="M0 0h24v24H0z" fill="none" />

@@ -5,33 +5,29 @@ import ClearDataButton from "./ClearDataButton";
 import { useRef } from "react";
 
 export interface LocationInputProps {
-  defaultValue: string;
   onChange?: (value: string) => void;
   onInputDone?: (value: string) => void;
   placeHolder?: string;
   desc?: string;
   className?: string;
   autoFocus?: boolean;
+  defaultPoints: string[];
 }
 
 const LocationInput: FC<LocationInputProps> = ({
-  defaultValue,
   autoFocus = false,
   onChange,
   onInputDone,
   placeHolder = "",
   desc = "",
   className = "nc-flex-1.5",
+  defaultPoints = [],
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const [value, setValue] = useState(defaultValue);
+  const [value, setValue] = useState("");
   const [showPopover, setShowPopover] = useState(autoFocus);
-
-  useEffect(() => {
-    setValue(defaultValue);
-  }, [defaultValue]);
 
   useEffect(() => {
     setShowPopover(autoFocus);
@@ -69,59 +65,10 @@ const LocationInput: FC<LocationInputProps> = ({
     setShowPopover(false);
   };
 
-  const renderRecentSearches = () => {
-    return (
-      <>
-        <h3 className="block mt-2 sm:mt-0 px-4 sm:px-8 font-semibold text-base sm:text-lg text-neutral-800 dark:text-neutral-100">
-          Recent searches
-        </h3>
-        <div className="mt-2">
-          {[
-            "Hamptons, Suffolk County, NY",
-            "Las Vegas, NV, United States",
-            "Ueno, Taito, Tokyo",
-            "Ikebukuro, Toshima, Tokyo",
-          ].map((item) => (
-            <span
-              onClick={() => handleSelectLocation(item)}
-              key={item}
-              className="flex px-4 sm:px-8 items-center space-x-3 sm:space-x-4 py-4 sm:py-5 hover:bg-neutral-100 dark:hover:bg-neutral-700 cursor-pointer"
-            >
-              <span className="block text-neutral-400">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-4 sm:h-6 w-4 sm:w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1.5}
-                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </span>
-              <span className=" block font-medium text-neutral-700 dark:text-neutral-200">
-                {item}
-              </span>
-            </span>
-          ))}
-        </div>
-      </>
-    );
-  };
-
   const renderSearchValue = () => {
     return (
       <>
-        {[
-          "Ha Noi, Viet Nam",
-          "San Diego, CA",
-          "Humboldt Park, Chicago, IL",
-          "Bangor, Northern Ireland",
-        ].map((item) => (
+        {defaultPoints.map((item) => (
           <span
             onClick={() => handleSelectLocation(item)}
             key={item}
@@ -215,7 +162,7 @@ const LocationInput: FC<LocationInputProps> = ({
       </div>
       {showPopover && (
         <div className="absolute left-0 z-40 w-full min-w-[300px] sm:min-w-[500px] bg-white dark:bg-neutral-800 top-full mt-3 py-3 sm:py-6 rounded-3xl shadow-xl max-h-96 overflow-y-auto">
-          {value ? renderSearchValue() : renderRecentSearches()}
+          {renderSearchValue()}
         </div>
       )}
     </div>

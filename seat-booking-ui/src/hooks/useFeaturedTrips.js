@@ -1,23 +1,25 @@
-import { useDidMount } from '@/hooks';
+import { useDidMount } from './useDidMount';
 import { useEffect, useState } from 'react';
-import firebase from '@/services/firebase';
+import { useDispatch } from 'react-redux';
 
-const useFeaturedProducts = (itemsCount) => {
-  const [featuredProducts, setFeaturedProducts] = useState([]);
+const useFeaturedTrips = (itemsCount) => {
+  const [featuredTrips, setFeaturedTrips] = useState([]);
   const [isLoading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const didMount = useDidMount(true);
 
-  const fetchFeaturedProducts = async () => {
+  const disPatch = useDispatch();
+
+  const fetchFeaturedTrips = async () => {
     try {
       setLoading(true);
       setError('');
 
-      const docs = await firebase.getFeaturedProducts(itemsCount);
+      const docs = disPatch()
 
       if (docs.empty) {
         if (didMount) {
-          setError('No featured products found.');
+          setError('No featured trips found.');
           setLoading(false);
         }
       } else {
@@ -29,27 +31,27 @@ const useFeaturedProducts = (itemsCount) => {
         });
 
         if (didMount) {
-          setFeaturedProducts(items);
+          setFeaturedTrips(items);
           setLoading(false);
         }
       }
     } catch (e) {
       if (didMount) {
-        setError('Failed to fetch featured products');
+        setError('Failed to fetch featured trips');
         setLoading(false);
       }
     }
   };
 
   useEffect(() => {
-    if (featuredProducts.length === 0 && didMount) {
-      fetchFeaturedProducts();
+    if (featuredTrips.length === 0 && didMount) {
+      fetchFeaturedTrips();
     }
   }, []);
 
   return {
-    featuredProducts, fetchFeaturedProducts, isLoading, error
+    featuredTrips, fetchFeaturedTrips, isLoading, error
   };
 };
 
-export default useFeaturedProducts;
+export default useFeaturedTrips;

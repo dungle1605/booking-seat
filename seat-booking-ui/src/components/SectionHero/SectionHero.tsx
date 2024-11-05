@@ -5,9 +5,15 @@ import HeroSearchForm from "components/HeroSearchForm/HeroSearchForm";
 
 export interface SectionHeroProps {
   className?: string;
+  beginPoints: string[];
+  destinationPoints: string[];
 }
 
-const SectionHero: FC<SectionHeroProps> = ({ className = "" }) => {
+const SectionHero: FC<SectionHeroProps> = ({
+  className = "",
+  beginPoints = [],
+  destinationPoints = [],
+}) => {
   return (
     <div
       className={`nc-SectionHero flex flex-col-reverse lg:flex-col relative ${className}`}
@@ -30,7 +36,10 @@ const SectionHero: FC<SectionHeroProps> = ({ className = "" }) => {
       </div>
 
       <div className="hidden lg:block z-10 mb-12 lg:mb-0 lg:-mt-40 w-full">
-        <HeroSearchForm />
+        <HeroSearchForm
+          beginPoints={beginPoints}
+          destinationPoints={destinationPoints}
+        />
       </div>
     </div>
   );

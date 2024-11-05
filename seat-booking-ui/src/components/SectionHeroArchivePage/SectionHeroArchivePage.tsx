@@ -44,7 +44,7 @@ const SectionHeroArchivePage: FC<SectionHeroArchivePageProps> = ({
 
       <div className="hidden lg:flow-root w-full">
         <div className="z-10 lg:-mt-40 xl:-mt-56 w-full">
-          <HeroSearchForm />
+          {/* <HeroSearchForm /> */}
         </div>
       </div>
     </div>
