@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import LocationInput from "./LocationInput";
 import GuestsInput from "./GuestsInput";
 import { FocusedInputShape } from "react-dates";
@@ -46,6 +46,8 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     null
   );
 
+  const [isFetching, setFetching] = useState(false);
+
   const store = useSelector((state: { trips: { items: TripDataType[] } }) => ({
     trips: state.trips.items,
     state: state,
@@ -67,12 +69,13 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     dispatch(setLoading(false));
   }, []);
 
-  const beginPoints = Array.from(
-    new Set(store.trips.map((t) => t.fromProvince))
-  );
-  const destinationPoints = Array.from(
-    new Set(store.trips.map((t) => t.toProvince))
-  );
+  const beginPoints = useMemo(() => {
+    return store.trips.map((t) => t.fromProvince)
+  }, [store.trips])
+
+  const destinationPoints = useMemo(() => {
+    return store.trips.map((t) => t.toProvince)
+  }, [store.trips]) 
 
   //
   useEffect(() => {
@@ -121,6 +124,3 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
 };
 
 export default StaySearchForm;
-function setFetching(arg0: boolean) {
-  throw new Error("Function not implemented.");
-}

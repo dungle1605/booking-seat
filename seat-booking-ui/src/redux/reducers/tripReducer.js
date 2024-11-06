@@ -17,10 +17,11 @@ export default (state = {
 }, action) => {
   switch (action.type) {
     case GET_TRIPS_SUCCESS:
+      console.log(action.payload)
       return {
         ...state,
         total: action.payload.total,
-        items: [...state.items, ...action.payload.trips]
+        items: [...state.items, ...(action.payload.trips.value || [])]
       };
     // case ADD_PRODUCT_SUCCESS:
     //   return {
