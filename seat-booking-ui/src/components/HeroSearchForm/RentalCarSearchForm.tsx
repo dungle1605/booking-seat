@@ -92,7 +92,7 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({
           {renderRadioBtn()}
           <div className="flex ">
             <div className="flex-1 relative flex flex-row">
-              <LocationInput
+              {/* <LocationInput
                 defaultValue={pickUpInputValue}
                 onChange={(e) => setPickUpInputValue(e)}
                 onInputDone={() =>
@@ -105,8 +105,8 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({
                 placeHolder="City or Airport"
                 desc="Pick up location"
                 className="flex-1"
-              />
-              {dropOffLocationType === "different" && (
+              /> */}
+              {/* {dropOffLocationType === "different" && (
                 <LocationInput
                   defaultValue={dropOffInputValue}
                   onChange={(e) => setDropOffInputValue(e)}
@@ -116,7 +116,7 @@ const RentalCarSearchForm: FC<RentalCarSearchFormProps> = ({
                   autoFocus={fieldFocused === "dropOffInput"}
                   className="flex-1"
                 />
-              )}
+              )} */}
             </div>
             <RentalCarDatesRangeInput
               defaultDateValue={dateRangeValue}

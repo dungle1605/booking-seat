@@ -5,6 +5,10 @@ import { FocusedInputShape } from "react-dates";
 import StayDatesRangeInput from "./StayDatesRangeInput";
 import moment from "moment";
 import { FC } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { TripDataType } from "../../data/types";
+import { getTrips } from "../../redux/actions/tripActions";
+import { setLoading } from "../../redux/actions/miscActions";
 
 export interface DateRage {
   startDate: moment.Moment | null;
@@ -13,8 +17,6 @@ export interface DateRage {
 
 export interface StaySearchFormProps {
   haveDefaultValue?: boolean;
-  beginPoints: string[];
-  destinationPoints: string[];
 }
 
 function addDays(date: number, days: number) {
@@ -32,8 +34,6 @@ const defaultTicketValue = 1;
 
 const StaySearchForm: FC<StaySearchFormProps> = ({
   haveDefaultValue = false,
-  beginPoints = [],
-  destinationPoints = [],
 }) => {
   const [dateRangeValue, setDateRangeValue] = useState<DateRage>({
     startDate: null,
@@ -44,6 +44,34 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
 
   const [dateFocused, setDateFocused] = useState<FocusedInputShape | null>(
     null
+  );
+
+  const store = useSelector((state: { trips: { items: TripDataType[] } }) => ({
+    trips: state.trips.items,
+    state: state,
+  }));
+
+  const dispatch = useDispatch();
+
+  const fetchTrips = () => {
+    setFetching(true);
+    dispatch(getTrips());
+  };
+
+  useEffect(() => {
+    if (store.trips.length === 0 || !store.trips) {
+      fetchTrips();
+    }
+
+    window.scrollTo(0, 0);
+    dispatch(setLoading(false));
+  }, []);
+
+  const beginPoints = Array.from(
+    new Set(store.trips.map((t) => t.fromProvince))
+  );
+  const destinationPoints = Array.from(
+    new Set(store.trips.map((t) => t.toProvince))
   );
 
   //
@@ -93,3 +121,6 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
 };
 
 export default StaySearchForm;
+function setFetching(arg0: boolean) {
+  throw new Error("Function not implemented.");
+}
