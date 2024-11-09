@@ -1,21 +1,18 @@
 /* eslint-disable indent */
-import {
-  GET_TRIPS,
-  SEARCH_TRIP
-} from '../../constants/constants';
+import { GET_TRIPS, SEARCH_TRIP } from "../../constants/constants";
 // import { ADMIN_PRODUCTS } from '@/constants/routes';
 // import { displayActionMessage } from '@/helpers/utils';
-import {
-  all, call, put, select
-} from 'redux-saga/effects';
-import { setLoading, setRequestStatus } from '../actions/miscActions';
+import { all, call, put, select } from "redux-saga/effects";
+import { setLoading, setRequestStatus } from "../actions/miscActions";
 // import { history } from '@/routers/AppRouter';
 import {
-  clearSearchState, getTripsSuccess,
-  searchTripSuccess
-} from '../actions/tripActions';
-import axios from 'axios';
+  clearSearchState,
+  getTripsSuccess,
+  searchTripSuccess,
+} from "../actions/tripActions";
+import axios from "axios";
 import { TripDataType } from "data/types";
+import moment from "moment";
 
 function* initRequest() {
   yield put(setLoading(true));
@@ -24,8 +21,8 @@ function* initRequest() {
 
 function* handleError(e: any) {
   yield put(setLoading(false));
-  yield put(setRequestStatus(e?.message || 'Failed to fetch trips'));
-  console.log('ERROR: ', e);
+  yield put(setRequestStatus(e?.message || "Failed to fetch trips"));
+  console.log("ERROR: ", e);
 }
 
 // function* handleAction(location, message, status) {
@@ -33,24 +30,71 @@ function* handleError(e: any) {
 //   yield call(displayActionMessage, message, status);
 // }
 
-function* tripSaga({ type, payload }: any) {
+function* tripSaga({ type, payload }: any): Generator<any, void, any> {
   switch (type) {
     case GET_TRIPS:
       try {
         yield initRequest();
-        const result: {data: TripDataType[]} = yield call(axios.get, 'https://sb-qa.runasp.net/api/v1/trips');
+        const result: { data: TripDataType[] } = yield call(
+          axios.get,
+          "https://sb-qa.runasp.net/api/v1/trips"
+        );
 
         if (result.data.length === 0) {
-          handleError('No items found.');
+          handleError("No items found.");
         } else {
-          yield put(getTripsSuccess({
-            trips: result.data,
-            total: result.data.length
-          }));
-          yield put(setRequestStatus(''));
+          yield put(
+            getTripsSuccess({
+              trips: result.data,
+              total: result.data.length,
+            })
+          );
+          yield put(setRequestStatus(""));
         }
         // yield put({ type: SET_LAST_REF_KEY, payload: result.lastKey });
         yield put(setLoading(false));
+      } catch (e) {
+        console.log(e);
+        yield handleError(e);
+      }
+      break;
+
+    case SEARCH_TRIP:
+      try {
+        yield initRequest();
+        const state = yield select();
+        const dataInState: TripDataType[] = state.trips.items;
+        console.log(
+          `startDate: ${payload.searchKey.dateRangeValue.startDate.format(
+            "YYYY-MM-DD"
+          )}`
+        );
+        var result = dataInState.filter(
+          (x) =>
+            x.fromProvince === payload.searchKey.beginPointInputValue &&
+            x.toProvince === payload.searchKey.destPointInputValue
+          // &&
+          // moment(x.startDate, "YYYY-MM-DD") ===
+          //   payload.searchKey.dateRangeValue.startDate.format("YYYY-MM-DD") &&
+          // moment(x.endDate, "YYYY-MM-DD") ===
+          //   payload.searchKey.dateRangeValue.endDate.format("YYYY-MM-DD") &&
+          // x.avaiableSeats >= payload.searchKey.amountOfTicket
+        );
+
+        if (result.length === 0) {
+          handleError("No items found.");
+        } else {
+          yield put(
+            searchTripSuccess({
+              trips: result,
+              total: result.length,
+            })
+          );
+          yield put(setRequestStatus(""));
+        }
+
+        yield put(setLoading(false));
+        console.log(result);
       } catch (e) {
         console.log(e);
         yield handleError(e);

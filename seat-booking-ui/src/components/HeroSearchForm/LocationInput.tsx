@@ -16,7 +16,7 @@ export interface LocationInputProps {
 
 const LocationInput: FC<LocationInputProps> = ({
   autoFocus = false,
-  onChange,
+  onChange = () => {},
   onInputDone,
   placeHolder = "",
   desc = "",
@@ -63,6 +63,7 @@ const LocationInput: FC<LocationInputProps> = ({
     setValue(item);
     onInputDone && onInputDone(item);
     setShowPopover(false);
+    onChange(item);
   };
 
   const renderSearchValue = () => {

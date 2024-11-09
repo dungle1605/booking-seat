@@ -7,7 +7,7 @@ import moment from "moment";
 import { FC } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { TripDataType } from "../../data/types";
-import { getTrips } from "../../redux/actions/tripActions";
+import { getTrips, searchTrip } from "../../redux/actions/tripActions";
 import { setLoading } from "../../redux/actions/miscActions";
 
 export interface DateRage {
@@ -17,12 +17,6 @@ export interface DateRage {
 
 export interface StaySearchFormProps {
   haveDefaultValue?: boolean;
-}
-
-function addDays(date: number, days: number) {
-  var result = new Date(date);
-  result.setDate(result.getDate() + days);
-  return result;
 }
 
 // DEFAULT DATA FOR ARCHIVE PAGE
@@ -39,8 +33,10 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     startDate: null,
     endDate: null,
   });
-  const [locationInputValue, setLocationInputValue] = useState("");
+  const [beginPointInputValue, setBeginPointInputValue] = useState("");
+  const [destPointInputValue, setDestPointInputValue] = useState("");
   const [ticketValue, setTicketValue] = useState(defaultTicketValue);
+  const [listDest, setListDest] = useState<string[]>([]);
 
   const [dateFocused, setDateFocused] = useState<FocusedInputShape | null>(
     null
@@ -70,12 +66,26 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
   }, []);
 
   const beginPoints = useMemo(() => {
-    return store.trips.map((t) => t.fromProvince)
-  }, [store.trips])
+    return store.trips
+      .map((t) => t.fromProvince)
+      .reduce<string[]>((arr: string[], cur: string) => {
+        if (!arr.includes(cur)) arr.push(cur);
+        return arr;
+      }, []);
+  }, [store.trips]);
 
-  const destinationPoints = useMemo(() => {
-    return store.trips.map((t) => t.toProvince)
-  }, [store.trips]) 
+  const handleDestList = (e: string) => {
+    var destList = store.trips
+      .filter((t) => t.fromProvince === e)
+      .map((t) => t.toProvince)
+      .reduce<string[]>((arr: string[], cur: string) => {
+        if (!arr.includes(cur)) arr.push(cur);
+        return arr;
+      }, []);
+
+    setListDest(destList);
+    return destList;
+  };
 
   //
   useEffect(() => {
@@ -84,6 +94,26 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
       setTicketValue(defaultTicketValue);
     }
   }, []);
+
+  const validateInputData = (amountOfTicket: number) => {
+    setTicketValue(amountOfTicket);
+
+    if (
+      beginPointInputValue !== "" &&
+      destPointInputValue !== "" &&
+      dateRangeValue.startDate != null &&
+      dateRangeValue.endDate != null
+    )
+      console.log("begin Searching...");
+    dispatch(
+      searchTrip({
+        beginPointInputValue,
+        destPointInputValue,
+        dateRangeValue,
+        amountOfTicket,
+      })
+    );
+  };
   //
 
   const renderForm = () => {
@@ -93,15 +123,15 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
           defaultPoints={beginPoints}
           placeHolder="Điểm đi"
           desc="Lựa chọn điểm đi"
-          onChange={(e) => setLocationInputValue(e)}
-          onInputDone={() => setDateFocused("startDate")}
+          onChange={(e) => setBeginPointInputValue(e)}
+          onInputDone={(e) => handleDestList(e)}
           className="flex-[1.5]"
         />
         <LocationInput
-          defaultPoints={destinationPoints}
+          defaultPoints={listDest}
           placeHolder="Điểm đến"
           desc="Lựa chọn điểm đến"
-          onChange={(e) => setLocationInputValue(e)}
+          onChange={(e) => setDestPointInputValue(e)}
           onInputDone={() => setDateFocused("startDate")}
           className="flex-[1.5]"
         />
@@ -113,7 +143,7 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
         />
         <GuestsInput
           defaultValue={ticketValue}
-          onChange={(data) => setTicketValue(data)}
+          onChange={(data) => validateInputData(data)}
           className="flex-[1.2]"
         />
       </form>

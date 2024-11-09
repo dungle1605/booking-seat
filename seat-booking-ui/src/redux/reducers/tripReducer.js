@@ -31,10 +31,9 @@ export default (state = {
     case SEARCH_TRIP_SUCCESS:
       return {
         ...state,
-        searchedProducts: {
-          lastRefKey: action.payload.lastKey,
+        searchedTrips: {
           total: action.payload.total,
-          items: [...state.searchedProducts.items, ...action.payload.products]
+          items: [...state.searchedTrips.items, ...action.payload.trips]
         }
       };
     case CLEAR_SEARCH_STATE:

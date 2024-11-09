@@ -19,11 +19,8 @@ function* rootSaga() {
   //   ACTION.RESET_PASSWORD
   // ], authSaga);
   yield takeLatest([
-    // ACTION.ADD_PRODUCT,
-    // ACTION.SEARCH_PRODUCT,
-    // ACTION.REMOVE_PRODUCT,
-    // ACTION.EDIT_PRODUCT,
-    ACTION.GET_TRIPS
+    ACTION.GET_TRIPS,
+    ACTION.SEARCH_TRIP
   ], tripSaga);
   // yield takeLatest([
   //   ACTION.UPDATE_EMAIL,
