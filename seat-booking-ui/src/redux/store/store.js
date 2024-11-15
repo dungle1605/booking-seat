@@ -14,7 +14,7 @@ const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const authPersistConfig = {
   key: 'root',
   storage,
-  whitelist: ['auth', 'profile', 'basket', 'checkout']
+  whitelist: ['auth', 'trip']
 };
 
 // eslint-disable-next-line import/no-anonymous-default-export

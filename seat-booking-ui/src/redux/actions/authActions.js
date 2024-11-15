@@ -13,6 +13,11 @@ export const signUp = (phoneNumber) => ({
   payload: phoneNumber
 });
 
+export const settingOTP = (otp) => ({
+  type: type.SETTING_OTP,
+  payload: otp
+})
+
 export const signInSuccess = (auth) => ({
   type: type.SIGNIN_SUCCESS,
   payload: auth

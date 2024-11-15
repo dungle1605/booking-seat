@@ -1,14 +1,13 @@
-import { SIGNIN_SUCCESS, SIGNOUT_SUCCESS } from '../../constants/constants';
+import { SIGNIN_SUCCESS, SIGNOUT_SUCCESS, SETTING_OTP } from '../../constants/constants';
 
 const initState = null;
-// {
-// id: 'test-123',
-// role: 'ADMIN',
-// provider: 'password'
-// };
 
 export default (state = initState, action) => {
   switch (action.type) {
+    case SETTING_OTP:
+      return {
+        otp: action.payload
+      }
     case SIGNIN_SUCCESS:
       return {
         id: action.payload.id,

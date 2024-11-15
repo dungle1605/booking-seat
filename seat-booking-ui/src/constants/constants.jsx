@@ -13,5 +13,7 @@ export const LOADING = "LOADING";
 export const SIGNIN = "SIGNIN";
 export const SIGNUP = "SIGNUP";
 
+export const SETTING_OTP = "SETTING_OTP";
+
 export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
 export const SIGNOUT_SUCCESS = "SIGNOUT_SUCCESS";
