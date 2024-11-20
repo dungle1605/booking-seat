@@ -6,7 +6,8 @@ import tripSaga from './tripSaga';
 function* rootSaga() {
   yield takeLatest([
     ACTION.SIGNIN,
-    ACTION.SIGNUP
+    ACTION.SIGNUP,
+    ACTION.SETTING_SIGNUP_PASSWORD
   ], authSaga);
   yield takeLatest([
     ACTION.GET_TRIPS,

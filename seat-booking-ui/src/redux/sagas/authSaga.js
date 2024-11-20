@@ -1,8 +1,8 @@
 import {
-  SIGNIN, SIGNUP
+  SIGNIN, SIGNUP, SETTING_SIGNUP_PASSWORD
 } from '../../constants/constants';
-import { call, put } from 'redux-saga/effects';
-import { settingOTP } from '../../redux/actions/authActions';
+import { call, put, select } from 'redux-saga/effects';
+import { settingOTP, clearSignUpProfile, signInSuccess } from '../../redux/actions/authActions';
 import { setAuthenticating, setAuthStatus } from '../../redux/actions/miscActions';
 
 function* handleError(e) {
@@ -41,6 +41,8 @@ function* authSaga({ type, payload }) {
     case SIGNIN:
       try {
         yield initRequest();
+        // After SignIn, get information from API
+        yield put(signInSuccess({phoneNumber: payload.phoneNumber, name: "Michael", role: "user"}))
       } catch (e) {
         yield handleError(e);
       }
@@ -51,17 +53,31 @@ function* authSaga({ type, payload }) {
         console.log('PhoneNumber - ' + payload)
         // Call API to check whether the phoneNumber is existing in this system
         var existedPhoneNumber = ['111'];
-        if(existedPhoneNumber.includes(payload)){
+        if (existedPhoneNumber.includes(payload)) {
           console.log('PhoneNumber already existed.')
         }
-        else{
+        else {
           // Call API to get OTP from BE side
           const fakeOtp = '123456'
 
-          yield put(settingOTP(fakeOtp))
+          yield put(settingOTP({phoneNumber: payload, otp: fakeOtp}))
         }
       } catch (e) {
         yield handleError(e);
+      }
+      break;
+    case SETTING_SIGNUP_PASSWORD:
+      try {
+        yield initRequest();
+        const state = yield select();
+
+        // send API with phoneNumber, Otp, password for signUp
+
+        // clear Information in State
+        yield put(clearSignUpProfile())
+      }
+      catch (e) {
+
       }
       break;
     default: {

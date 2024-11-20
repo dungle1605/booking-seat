@@ -18,6 +18,19 @@ export const settingOTP = (otp) => ({
   payload: otp
 })
 
+export const settingSignUpPassword = (phoneNumber, otp, password) => ({
+  type: type.SETTING_SIGNUP_PASSWORD,
+  payload: {
+    phoneNumber,
+    otp,
+    password
+  }
+})
+
+export const clearSignUpProfile = () => ({
+  type: type.CLEAR_SIGNUP_PROFILE
+})
+
 export const signInSuccess = (auth) => ({
   type: type.SIGNIN_SUCCESS,
   payload: auth

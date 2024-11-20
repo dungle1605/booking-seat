@@ -1,20 +1,26 @@
-import { SIGNIN_SUCCESS, SIGNOUT_SUCCESS, SETTING_OTP } from '../../constants/constants';
+import * as ACTION from '../../constants/constants';
 
 const initState = null;
 
 export default (state = initState, action) => {
   switch (action.type) {
-    case SETTING_OTP:
+    case ACTION.SETTING_OTP:
       return {
-        otp: action.payload
+        phoneNumber: action.payload.phoneNumber,
+        otp: action.payload.otp
       }
-    case SIGNIN_SUCCESS:
+    case ACTION.SIGNIN_SUCCESS:
       return {
-        id: action.payload.id,
-        role: action.payload.role,
-        provider: action.payload.provider
+        phoneNumber: action.payload.phoneNumber,
+        name: action.payload.name,
+        role: action.payload.role
       };
-    case SIGNOUT_SUCCESS:
+    case ACTION.CLEAR_SIGNUP_PROFILE:
+      return {
+        phoneNumber: null,
+        otp: null
+      }
+    case ACTION.SIGNOUT_SUCCESS:
       return null;
     default:
       return state;
