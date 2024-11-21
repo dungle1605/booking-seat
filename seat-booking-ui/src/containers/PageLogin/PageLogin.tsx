@@ -1,7 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import beautifulGirl from "images/beautifulGirl.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { signIn, signUp, settingSignUpPassword } from "../../redux/actions/authActions";
+import { useNavigate } from "react-router-dom";
+import ReactLoading from 'react-loading';
+import toast from 'react-hot-toast';
 
 export interface PageLoginProps {
   className?: string;
@@ -9,6 +12,7 @@ export interface PageLoginProps {
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   const defaultTab = "Đăng nhập"
+  const [isFetching, setFetching] = useState(false);
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [phoneNumberSignIn, setPhoneNumberSignIn] = useState("");
   const [passwordSignIn, setPasswordSignIn] = useState("");
@@ -21,14 +25,46 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   const [passwordSignUpStep, setPasswordSignUpStep] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const store = useSelector((state: any) => ({
-    otp: state.auth.otp,
+    otp: state.auth?.otp,
+    userName: state.auth?.name,
     state: state,
   }));
 
+  useEffect(() => {
+    if (store.userName != null && store.userName != '' && !isFetching)
+      navigate('/');
+  }, [store.userName != null && !isFetching]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('Delay 3 seconds for fetching');
+      setFetching(false);
+    }, 3000)
+  }, [isFetching == true])
+
   const handleSignIn = (e: any) => {
     e.preventDefault();
+    var phoneNumberPattern = /^0[1-9][0-9]{8,9}$/;
+    var passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/
+    if(!phoneNumberPattern.test(phoneNumberSignIn)){
+      toast.error('Số điện thoại ko đúng định dạng, vui lòng nhập lại!', {
+        position: "top-right"
+      });
+      return;
+    }
+
+    if(!passwordPattern.test(passwordSignIn))
+    {
+      toast.error('Mật khẩu không đúng định dạng, vui lòng nhập lại!', {
+        position: "top-right"
+      });
+      return;
+    }
+
+    setFetching(true);
     dispatch(signIn(phoneNumberSignIn, passwordSignIn));
   };
 
@@ -87,7 +123,9 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   };
 
   return (
+
     <div className="flex h-2/4 m-12">
+      {isFetching && (<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"><ReactLoading type='spin' color='#ffffff' delay={200} height={667} width={375} /></div>)}
       <div className="flex-1 flex items-center justify-center">
         <img
           src={beautifulGirl}
@@ -121,7 +159,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
                 type="text"
                 id="phoneNumber"
                 name="phoneNumber"
-                onChange={() => setPhoneNumberSignIn(phoneNumberSignIn)}
+                onChange={(e) => setPhoneNumberSignIn(e.target.value)}
                 className="w-full border border-gray-300 rounded-md p-2"
                 placeholder="Nhập số điện thoại"
               />
