@@ -11,7 +11,12 @@ export interface PageLoginProps {
 }
 
 const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
+  const phoneNumberPattern = /^0[1-9][0-9]{8,9}$/;
+  const passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/
   const defaultTab = "Đăng nhập"
+  const wrongPhoneNumberFormat = "Số điện thoại ko đúng định dạng, vui lòng nhập lại!";
+  const wrongPasswordFormat = "Mật khẩu không đúng định dạng, vui lòng nhập lại!";
+  const wrongOTPInput = "Sai mã OTP, vui lòng kiểm tra lại!";
   const [isFetching, setFetching] = useState(false);
   const [activeTab, setActiveTab] = useState(defaultTab);
   const [phoneNumberSignIn, setPhoneNumberSignIn] = useState("");
@@ -30,6 +35,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   const store = useSelector((state: any) => ({
     otp: state.auth?.otp,
     userName: state.auth?.name,
+    phoneNumber: state.auth?.phoneNumber,
     state: state,
   }));
 
@@ -45,12 +51,18 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
     }, 3000)
   }, [isFetching == true])
 
+  useEffect(() => {
+    if(store.otp == null && store.phoneNumber == null)
+    {
+      setOtpInputStep(false);
+    }
+  }, [activeTab == 'Đăng ký'])
+
   const handleSignIn = (e: any) => {
     e.preventDefault();
-    var phoneNumberPattern = /^0[1-9][0-9]{8,9}$/;
-    var passwordPattern = /^(?=.*[A-Z])(?=.*[\W_]).{8,}$/
+
     if(!phoneNumberPattern.test(phoneNumberSignIn)){
-      toast.error('Số điện thoại ko đúng định dạng, vui lòng nhập lại!', {
+      toast.error(wrongPhoneNumberFormat, {
         position: "top-right"
       });
       return;
@@ -58,7 +70,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 
     if(!passwordPattern.test(passwordSignIn))
     {
-      toast.error('Mật khẩu không đúng định dạng, vui lòng nhập lại!', {
+      toast.error(wrongPasswordFormat, {
         position: "top-right"
       });
       return;
@@ -70,21 +82,33 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
 
   const handleFinalSignUpStep = (e: any) => {
     e.preventDefault();
+    if(!passwordPattern.test(passwordSignUp))
+      {
+        toast.error(wrongPasswordFormat, {
+          position: "top-right"
+        });
+        return;
+      }
+    setFetching(true);
     dispatch(settingSignUpPassword(passwordSignUp));
+    setPhoneNumberSignIn(phoneNumberSignUp)
     setActiveTab(defaultTab)
   }
 
   const handleSignUp = (e: any) => {
     e.preventDefault();
     dispatch(signUp(phoneNumberSignUp));
+    setFetching(true);
     setOtpInputStep(true)
   };
 
   const handleOtpInputForm = (e: any) => {
     e.preventDefault();
-
-    if (optInputs.length < 6 && store.otp !== optInputs.join('')) {
-      console.log('Wrong OTP');
+    setFetching(true)
+    if (optInputs.length < 6 || store.otp !== optInputs.join('')) {
+      toast.error(wrongOTPInput, {
+        position: "top-right"
+      });
       setOtpInputs(Array(6).fill(''))
     }
     else
@@ -125,7 +149,7 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
   return (
 
     <div className="flex h-2/4 m-12">
-      {isFetching && (<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"><ReactLoading type='spin' color='#ffffff' delay={200} height={667} width={375} /></div>)}
+      {isFetching && (<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"><ReactLoading type='spin' color='#ffffff' delay={200} height={50} width={50} /></div>)}
       <div className="flex-1 flex items-center justify-center">
         <img
           src={beautifulGirl}
@@ -157,8 +181,8 @@ const PageLogin: FC<PageLoginProps> = ({ className = "" }) => {
               <label className="block text-gray-700">Số điện thoại</label>
               <input
                 type="text"
-                id="phoneNumber"
-                name="phoneNumber"
+                id="phoneNumber1"
+                name="phoneNumber1"
                 onChange={(e) => setPhoneNumberSignIn(e.target.value)}
                 className="w-full border border-gray-300 rounded-md p-2"
                 placeholder="Nhập số điện thoại"
