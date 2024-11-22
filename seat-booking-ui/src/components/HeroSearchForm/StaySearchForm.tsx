@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { TripDataType } from "../../data/types";
 import { getTrips, searchTrip } from "../../redux/actions/tripActions";
 import { setLoading } from "../../redux/actions/miscActions";
+import ReactLoading from "react-loading";
 
 export interface DateRage {
   startDate: moment.Moment | null;
@@ -49,6 +50,13 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     state: state,
   }));
 
+  useEffect(() => {
+    setTimeout(() => {
+      console.log('Delay 3 seconds for fetching');
+      setFetching(false);
+    }, 3000)
+  }, [isFetching == true])
+
   const dispatch = useDispatch();
 
   const fetchTrips = () => {
@@ -60,8 +68,6 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
     if (store.trips.length === 0 || !store.trips) {
       fetchTrips();
     }
-
-    window.scrollTo(0, 0);
     dispatch(setLoading(false));
   }, []);
 
@@ -104,21 +110,25 @@ const StaySearchForm: FC<StaySearchFormProps> = ({
       dateRangeValue.startDate != null &&
       dateRangeValue.endDate != null
     )
-      console.log("begin Searching...");
-    dispatch(
-      searchTrip({
-        beginPointInputValue,
-        destPointInputValue,
-        dateRangeValue,
-        amountOfTicket,
-      })
-    );
+    {
+      setFetching(true)
+      dispatch(
+        searchTrip({
+          beginPointInputValue,
+          destPointInputValue,
+          dateRangeValue,
+          amountOfTicket,
+        })
+      );
+    }
+    
   };
   //
 
   const renderForm = () => {
     return (
       <form className="w-full relative mt-8 flex rounded-full shadow-xl dark:shadow-2xl bg-white dark:bg-neutral-800 ">
+        {isFetching && (<div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75 z-50"><ReactLoading type='spin' color='#ffffff' delay={200} height={50} width={50} /></div>)}
         <LocationInput
           defaultPoints={beginPoints}
           placeHolder="Điểm đi"

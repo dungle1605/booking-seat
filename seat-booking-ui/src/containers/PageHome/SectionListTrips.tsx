@@ -19,21 +19,6 @@ const timeLineFilter = [
   "Buổi tối 18:00 - 24:00 (28)",
 ];
 
-const schedules = [
-  {
-    title: "Bến xe Miền Tây",
-    desc: "VP BX Miền Tây: 395 Kinh Dương Vương , P.An Lạc , Q.Bình Tân , TP.HCM",
-  },
-  {
-    title: "Bến xe An Sương",
-    desc: "Bến Xe An Sương, Quốc Lộ 22, Ấp Đông Lân, Bà Điểm, Hóc Môn, TP Hồ Chí Minh",
-  },
-  {
-    title: "Bến xe Miền Tây",
-    desc: "VP BX Miền Tây: 395 Kinh Dương Vương , P.An Lạc , Q.Bình Tân , TP.HCM",
-  },
-];
-
 const SectionListTrips: FC<SectionListTripsProps> = ({
   searchedTrips = [],
   className = "",
@@ -50,6 +35,15 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
     setBeginPoint(searchedTrips[0].fromProvince);
     setDestinationPoint(searchedTrips[0].toProvince);
   }, []);
+
+  const calculateTimeTravel = (startTime: string, endTime: string) => {
+    // Parse the time strings into Date objects
+    const start = new Date(`1970-01-01T${startTime}:00`).getHours();
+    const end = new Date(`1970-01-01T${endTime}:00`).getHours();
+
+    let difference = end - start;
+    return difference;
+  }
 
   const handleClickTab = (item: any) => {
     return item;
@@ -112,7 +106,7 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
           {searchedTrips.map((trip, ind) => (
             <div
               key={ind}
-              className="grid gap-y-1 sm:rounded-2xl sm:border space-y-4 px-0 sm:p-6 xl:p-8"
+              className={`grid gap-y-1 sm:rounded-2xl sm:border space-y-4 px-0 sm:p-6 xl:p-8 ${ind !== 0 ? 'mt-10' : ''}`}
             >
               <div className="flex justify-between">
                 {/* Begin Point */}
@@ -144,7 +138,7 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                     <div className="border-b md:border-dotted border-neutral-200 dark:border-neutral"></div>
                     <div></div>
                   </div>
-                  <div className="w-1/5 text-center">3 giờ</div>
+                  <div className="w-1/5 text-center">{calculateTimeTravel(trip.startTime, trip.endTime)} giờ</div>
                   <div className="w-2/5">
                     <div className="border-b md:border-dotted border-neutral-200 dark:border-neutral"></div>
                     <div></div>
@@ -224,11 +218,11 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                       <button
                         className={`block !leading-none whitespace-nowrap text-sm sm:text-base sm:px-4 sm:py-3 capitalize rounded-full text-neutral-500 dark:text-neutral-400 dark:hover:text-neutral-100 hover:text-neutral-900 hover:bg-neutral-100 dark:hover:bg-neutral-800 focus:outline-none 
                       ${
-                        tabActiveState === item
+                        tabActiveState === `${trip.id}-tab-index-${index}`
                           ? "underline dark:text-neutral-100 text-neutral-900 bg-neutral-100 dark:bg-neutral-800"
                           : ""
                       }`}
-                        onClick={() => setTabActiveState(item)}
+                        onClick={() => setTabActiveState(`${trip.id}-tab-index-${index}`)}
                       >
                         {item}
                       </button>
@@ -245,9 +239,11 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
               {/* Details Trip - Body */}
 
               {/* Schedules */}
-              <div className="overflow-y-auto" style={{ height: "30rem" }}>
-                {trip.route.pickupPoints.map((pickupPoint, index) => (
-                  <div key={index} className="flex">
+              <div className={`overflow-y-auto ${tabActiveState.substring(0, tabActiveState.indexOf('-tab-index')) === trip.id.toString() ? 'h-96' : '' }`}>
+                {tabActiveState.substring(0, tabActiveState.indexOf('-tab-index')) === trip.id.toString() 
+                 && tabActiveState.substring(tabActiveState.lastIndexOf('-') + 1) === '1'
+                 && trip.route.pickupPoints.map((pickupPoint, index) => (
+                  <div key={index} className="flex ">
                     <div className="text-neutral-300 dark:text-neutral-400">
                       <svg
                         xmlns="http://www.w3.org/2000/svg"
