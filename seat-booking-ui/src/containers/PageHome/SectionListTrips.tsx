@@ -45,6 +45,13 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
     return difference;
   }
 
+  const changetoVNDCurrency = (price: number) => {
+    return new Intl.NumberFormat('vi-VN', {
+      style: 'currency',
+      currency: 'VND',
+  }).format(price);
+  }
+
   const handleClickTab = (item: any) => {
     return item;
   };
@@ -197,7 +204,7 @@ const SectionListTrips: FC<SectionListTripsProps> = ({
                 <p className="w-2/4 text-right">{trip.toProvince}</p>
                 <div>
                   <span className="text-xl font-semibold text-secondary-6000">
-                    {trip.price}đ
+                    {changetoVNDCurrency(trip.price)}
                   </span>
                 </div>
               </div>
